@@ -4,14 +4,12 @@ import CPCard from "./CPCard";
 
 interface StepProfileProps {
   name: string;
-  dedicatoria: string;
   profilePhotoFile: File | null;
   onNameChange: (v: string) => void;
-  onDedicatoriaChange: (v: string) => void;
   onPhotoChange: (f: File) => void;
 }
 
-export default function StepProfile({ name, dedicatoria, profilePhotoFile, onNameChange, onDedicatoriaChange, onPhotoChange }: StepProfileProps) {
+export default function StepProfile({ name, profilePhotoFile, onNameChange, onPhotoChange }: StepProfileProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const preview = profilePhotoFile ? URL.createObjectURL(profilePhotoFile) : null;
 
@@ -39,19 +37,6 @@ export default function StepProfile({ name, dedicatoria, profilePhotoFile, onNam
           placeholder="tu nombre o nickname..."
           className="w-full border-b-2 border-cp-blue bg-transparent text-center font-nunito font-bold text-cp-navy text-lg outline-none py-2 placeholder-blue-300"
         />
-
-        <div className="w-full">
-          <label className="block font-nunito font-bold text-cp-dark-blue text-base mb-2">
-            ✍️ dedicatoria para Jime
-          </label>
-          <textarea
-            value={dedicatoria}
-            onChange={(e) => onDedicatoriaChange(e.target.value)}
-            placeholder="escribile algo especial... un mensaje del corazón, un recuerdo, lo que sientas 💙"
-            rows={4}
-            className="w-full border-[3px] border-cp-blue rounded-xl px-4 py-3 font-nunito text-base text-blue-900 placeholder-blue-300 resize-none outline-none focus:border-cp-dark-blue transition-colors"
-          />
-        </div>
       </div>
     </CPCard>
   );

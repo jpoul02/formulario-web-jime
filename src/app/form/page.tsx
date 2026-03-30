@@ -4,13 +4,14 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import StepOverview from "@/components/StepOverview";
 import StepProfile from "@/components/StepProfile";
+import StepDedicatoria from "@/components/StepDedicatoria";
 import StepQuestions from "@/components/StepQuestions";
 import StepVideo from "@/components/StepVideo";
 import StepPhotos from "@/components/StepPhotos";
 import { submitPostal } from "@/lib/api";
 import type { FormState } from "@/types";
 
-const TOTAL_STEPS = 5;
+const TOTAL_STEPS = 6;
 
 export default function FormPage() {
   const router = useRouter();
@@ -59,14 +60,18 @@ export default function FormPage() {
       {step === 2 && (
         <StepProfile
           name={state.name}
-          dedicatoria={state.dedicatoria}
           profilePhotoFile={state.profilePhotoFile}
           onNameChange={(v) => update("name", v)}
-          onDedicatoriaChange={(v) => update("dedicatoria", v)}
           onPhotoChange={(f) => update("profilePhotoFile", f)}
         />
       )}
       {step === 3 && (
+        <StepDedicatoria
+          dedicatoria={state.dedicatoria}
+          onDedicatoriaChange={(v) => update("dedicatoria", v)}
+        />
+      )}
+      {step === 4 && (
         <StepQuestions
           answers={state.answers}
           onAnswersChange={(a) => update("answers", a)}
@@ -74,13 +79,13 @@ export default function FormPage() {
           onShownIdsChange={(ids) => update("shownQuestionIds", ids)}
         />
       )}
-      {step === 4 && (
+      {step === 5 && (
         <StepVideo
           videoFile={state.videoFile}
           onVideoChange={(f) => update("videoFile", f)}
         />
       )}
-      {step === 5 && (
+      {step === 6 && (
         <StepPhotos
           photoFiles={state.photoFiles}
           onPhotosChange={(files) => update("photoFiles", files)}

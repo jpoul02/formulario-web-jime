@@ -79,7 +79,7 @@ export default function StepQuestions({ answers, onAnswersChange, shownQuestionI
           type="button"
           onClick={() => loadMore(1)}
           disabled={loading}
-          className="w-full mt-2 py-3 border-2 border-cp-blue rounded-xl font-nunito font-bold text-sm text-cp-dark-blue hover:bg-cp-sky transition-colors disabled:opacity-50"
+          className="w-full mt-2 py-4 border-[3px] border-cp-blue rounded-xl font-nunito font-bold text-base text-cp-dark-blue hover:bg-cp-sky transition-colors disabled:opacity-50"
         >
           {loading ? "cargando..." : "💬 ver otra pregunta"}
         </button>
