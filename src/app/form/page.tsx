@@ -4,12 +4,13 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import StepProfile from "@/components/StepProfile";
 import StepQuestions from "@/components/StepQuestions";
+import StepVideoPrep from "@/components/StepVideoPrep";
 import StepVideo from "@/components/StepVideo";
 import StepPhotos from "@/components/StepPhotos";
 import { submitPostal } from "@/lib/api";
 import type { FormState } from "@/types";
 
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 5;
 
 export default function FormPage() {
   const router = useRouter();
@@ -75,13 +76,14 @@ export default function FormPage() {
           onShownIdsChange={(ids) => update("shownQuestionIds", ids)}
         />
       )}
-      {step === 3 && (
+      {step === 3 && <StepVideoPrep />}
+      {step === 4 && (
         <StepVideo
           videoFile={state.videoFile}
           onVideoChange={(f) => update("videoFile", f)}
         />
       )}
-      {step === 4 && (
+      {step === 5 && (
         <StepPhotos
           photoFiles={state.photoFiles}
           onPhotosChange={(files) => update("photoFiles", files)}
