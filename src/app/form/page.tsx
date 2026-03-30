@@ -40,7 +40,8 @@ export default function FormPage() {
     try {
       const postal = await submitPostal(state);
       toast.success("🐧 ¡postal enviada! redirigiendo...", { id: toastId, duration: 2000 });
-      setTimeout(() => router.push(`/galeria/${postal.id}`), 1200);
+      // setTimeout(() => router.push(`/galeria/${postal.id}`), 1200);
+      setTimeout(() => router.push(`/`), 1200);
     } catch {
       toast.error("❌ hubo un error al enviar. intentá de nuevo.", { id: toastId });
       setSubmitting(false);
@@ -89,6 +90,7 @@ export default function FormPage() {
         <StepPhotos
           photoFiles={state.photoFiles}
           onPhotosChange={(files) => update("photoFiles", files)}
+          disabled={submitting}
         />
       )}
 
@@ -96,16 +98,18 @@ export default function FormPage() {
       <div className="flex gap-3 mt-4">
         {step > 1 && (
           <button
+            disabled={submitting}
             onClick={() => setStep((s) => s - 1)}
-            className="flex-1 py-4 border-[3px] border-cp-blue rounded-xl font-nunito font-bold text-base text-cp-dark-blue hover:bg-cp-sky transition-colors"
+            className="flex-1 py-4 border-[3px] border-cp-blue rounded-xl font-nunito font-bold text-base text-cp-dark-blue hover:bg-cp-sky transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"
           >
             ← atrás
           </button>
         )}
         {step < TOTAL_STEPS ? (
           <button
+            disabled={submitting}
             onClick={() => setStep((s) => s + 1)}
-            className="flex-1 py-4 bg-gradient-to-r from-cp-dark-blue to-cp-blue text-white rounded-xl font-nunito font-bold text-base shadow-cp hover:-translate-y-0.5 transition-all"
+            className="flex-1 py-4 bg-gradient-to-r from-cp-dark-blue to-cp-blue text-white rounded-xl font-nunito font-bold text-base shadow-cp hover:-translate-y-0.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0"
           >
             siguiente →
           </button>
