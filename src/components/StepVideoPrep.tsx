@@ -39,7 +39,7 @@ export default function StepVideoPrep() {
           <span className="text-xl">💡</span>
           <div>
             <p className="font-bold text-cp-navy text-sm font-nunito">si no tenés uno listo</p>
-            <p className="text-blue-400 text-xs font-nunito">no hay problema — podés saltear este paso y enviar tu postal igual</p>
+            <p className="text-blue-400 text-xs font-nunito">no hay problema — podés saltar este paso y enviar tu postal igual</p>
           </div>
         </div>
       </div>

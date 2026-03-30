@@ -28,7 +28,7 @@ export default function StepDedicatoria({ dedicatoria, onDedicatoriaChange }: St
       />
 
       <p className="font-nunito text-sm text-blue-400 mt-2 text-right">
-        {local.length > 0 ? `${local.length} caracteres` : "también podés saltear este paso"}
+        {local.length > 0 ? `${local.length} caracteres` : "también podés saltar este paso"}
       </p>
     </CPCard>
   );
