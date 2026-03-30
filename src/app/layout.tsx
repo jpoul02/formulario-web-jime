@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Press_Start_2P, VT323, Nunito, Caveat } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const pressStart2P = Press_Start_2P({ weight: "400", subsets: ["latin"], variable: "--font-pixel" });
@@ -14,6 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="es">
       <body className={`${pressStart2P.variable} ${vt323.variable} ${nunito.variable} ${caveat.variable} font-nunito`}>
         {children}
+        <Toaster position="bottom-center" richColors />
       </body>
     </html>
   );

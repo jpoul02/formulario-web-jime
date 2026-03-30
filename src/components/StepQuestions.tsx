@@ -18,6 +18,7 @@ export default function StepQuestions({ answers, onAnswersChange, shownQuestionI
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(false);
   const [allShown, setAllShown] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (questions.length === 0) loadMore(5);
@@ -25,12 +26,15 @@ export default function StepQuestions({ answers, onAnswersChange, shownQuestionI
 
   async function loadMore(count = 1) {
     setLoading(true);
+    setError(false);
     try {
       const newQs = await getRandomQuestions(count, shownQuestionIds);
       const updatedIds = [...shownQuestionIds, ...newQs.map((q) => q.id)];
       setQuestions((prev) => [...prev, ...newQs]);
       onShownIdsChange(updatedIds);
       if (updatedIds.length >= TOTAL_QUESTIONS) setAllShown(true);
+    } catch {
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -47,6 +51,12 @@ export default function StepQuestions({ answers, onAnswersChange, shownQuestionI
 
   return (
     <CPCard step="02" title="cuéntale algo a jime">
+      {error && (
+        <div className="mb-3 p-3 bg-red-50 border-2 border-red-300 rounded-xl text-center">
+          <p className="text-red-600 text-sm font-nunito mb-2">No se pudieron cargar las preguntas 😕</p>
+          <button onClick={() => loadMore(5)} className="text-cp-dark-blue text-xs font-bold underline font-nunito">reintentar</button>
+        </div>
+      )}
       {questions.map((q) => (
         <AskQuestion
           key={q.id}

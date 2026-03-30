@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import StepProfile from "@/components/StepProfile";
 import StepQuestions from "@/components/StepQuestions";
 import StepVideo from "@/components/StepVideo";
@@ -35,11 +36,16 @@ export default function FormPage() {
 
   async function handleSubmit() {
     setSubmitting(true);
+    const hasFiles = state.profilePhotoFile || state.videoFile || state.photoFiles.length > 0;
+    const toastId = toast.loading(
+      hasFiles ? "☁️ subiendo archivos... puede tardar un momento" : "📨 enviando postal..."
+    );
     try {
       const postal = await submitPostal(state);
-      router.push(`/galeria/${postal.id}`);
+      toast.success("🐧 ¡postal enviada! redirigiendo...", { id: toastId, duration: 2000 });
+      setTimeout(() => router.push(`/galeria/${postal.id}`), 1200);
     } catch {
-      alert("Hubo un error al enviar. Intentá de nuevo.");
+      toast.error("❌ hubo un error al enviar. intentá de nuevo.", { id: toastId });
       setSubmitting(false);
     }
   }
@@ -86,7 +92,7 @@ export default function FormPage() {
       <div className="flex gap-3 mt-4">
         {step > 1 && (
           <button onClick={() => setStep((s) => s - 1)}
-            className="flex-1 py-3 border-[3px] border-cp-blue rounded-xl font-pixel text-[7px] text-cp-dark-blue hover:bg-cp-sky transition-colors">
+            className="flex-1 py-3 border-[3px] border-cp-blue rounded-xl font-pixel text-[10px] text-cp-dark-blue hover:bg-cp-sky transition-colors">
             ← atrás
           </button>
         )}
@@ -94,7 +100,7 @@ export default function FormPage() {
           <button
             onClick={() => setStep((s) => s + 1)}
             disabled={!canAdvance()}
-            className="flex-1 py-3 bg-gradient-to-r from-cp-dark-blue to-cp-blue text-white rounded-xl font-pixel text-[7px] shadow-cp disabled:opacity-40 hover:-translate-y-0.5 transition-all"
+            className="flex-1 py-3 bg-gradient-to-r from-cp-dark-blue to-cp-blue text-white rounded-xl font-pixel text-[10px] shadow-cp disabled:opacity-40 hover:-translate-y-0.5 transition-all"
           >
             siguiente →
           </button>
@@ -102,7 +108,7 @@ export default function FormPage() {
           <button
             onClick={handleSubmit}
             disabled={submitting}
-            className="flex-1 py-3 bg-gradient-to-r from-cp-dark-blue to-cp-blue text-white rounded-xl font-pixel text-[7px] shadow-cp disabled:opacity-40 hover:-translate-y-0.5 transition-all"
+            className="flex-1 py-3 bg-gradient-to-r from-cp-dark-blue to-cp-blue text-white rounded-xl font-pixel text-[10px] shadow-cp disabled:opacity-40 hover:-translate-y-0.5 transition-all"
           >
             {submitting ? "enviando..." : "🐧 enviar postal"}
           </button>
