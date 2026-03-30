@@ -17,7 +17,7 @@ export default async function PostalPage({ params }: { params: { id: string } })
   return (
     <main>
       <div className="max-w-lg mx-auto px-4 pt-4">
-        <Link href="/galeria" className="font-pixel text-[7px] text-cp-dark-blue hover:underline">← galería</Link>
+        <Link href="/galeria" className="font-nunito font-bold text-base text-cp-dark-blue hover:underline">← galería</Link>
       </div>
       <PostalDetailView postal={postal} />
     </main>

@@ -22,8 +22,8 @@ export default async function GaleriaPage() {
         )}
 
         <div className="mt-10 text-center">
-          <Link href="/form" className="inline-block bg-cp-blue text-white font-pixel text-[7px] px-6 py-3 rounded-xl shadow-cp hover:-translate-y-0.5 transition-all">
-            + dejar mi postal
+          <Link href="/form" className="inline-block bg-cp-blue text-white font-nunito font-black text-lg px-8 py-4 rounded-xl shadow-cp hover:-translate-y-0.5 transition-all">
+            💌 dejar mi postal
           </Link>
         </div>
       </div>

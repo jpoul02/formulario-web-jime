@@ -31,6 +31,7 @@ export interface PostalListItem {
 export interface PostalDetail {
   id: number;
   name: string;
+  dedicatoria: string | null;
   profile_photo_url: string | null;
   video_url: string | null;
   created_at: string;
@@ -40,6 +41,7 @@ export interface PostalDetail {
 
 export interface FormState {
   name: string;
+  dedicatoria: string;
   profilePhotoFile: File | null;
   answers: AnswerIn[];
   videoFile: File | null;

@@ -45,7 +45,7 @@ export default function LandingPage() {
       <div className="flex flex-col gap-3 w-full max-w-xs">
         <Link
           href="/form"
-          className="block text-center bg-gradient-to-r from-cp-dark-blue to-cp-blue text-white font-pixel text-[8px] py-4 rounded-xl shadow-cp hover:-translate-y-1 hover:shadow-cp-hover transition-all border-[2px] border-cp-navy"
+          className="block text-center bg-gradient-to-r from-cp-dark-blue to-cp-blue text-white font-nunito font-black text-xl py-5 rounded-xl shadow-cp hover:-translate-y-1 hover:shadow-cp-hover transition-all border-[2px] border-cp-navy"
         >
           💌 dejar mi postal
         </Link>

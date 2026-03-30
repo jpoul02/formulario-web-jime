@@ -22,9 +22,15 @@ export async function getPostal(id: number): Promise<PostalDetail> {
   return res.json();
 }
 
+export async function deletePostal(id: number): Promise<void> {
+  const res = await fetch(`${API}/postales/${id}`, { method: "DELETE" });
+  if (!res.ok) throw new Error("Failed to delete postal");
+}
+
 export async function submitPostal(state: FormState): Promise<PostalDetail> {
   const form = new FormData();
   form.append("name", state.name);
+  if (state.dedicatoria.trim()) form.append("dedicatoria", state.dedicatoria.trim());
   form.append("answers", JSON.stringify(state.answers));
   if (state.profilePhotoFile) form.append("profile_photo", state.profilePhotoFile);
   if (state.videoFile) form.append("video", state.videoFile);

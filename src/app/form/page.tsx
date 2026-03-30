@@ -18,6 +18,7 @@ export default function FormPage() {
   const [submitting, setSubmitting] = useState(false);
   const [state, setState] = useState<FormState>({
     name: "",
+    dedicatoria: "",
     profilePhotoFile: null,
     answers: [],
     videoFile: null,
@@ -63,8 +64,10 @@ export default function FormPage() {
       {step === 1 && (
         <StepProfile
           name={state.name}
+          dedicatoria={state.dedicatoria}
           profilePhotoFile={state.profilePhotoFile}
           onNameChange={(v) => update("name", v)}
+          onDedicatoriaChange={(v) => update("dedicatoria", v)}
           onPhotoChange={(f) => update("profilePhotoFile", f)}
         />
       )}
@@ -94,7 +97,7 @@ export default function FormPage() {
       <div className="flex gap-3 mt-4">
         {step > 1 && (
           <button onClick={() => setStep((s) => s - 1)}
-            className="flex-1 py-3 border-[3px] border-cp-blue rounded-xl font-pixel text-[10px] text-cp-dark-blue hover:bg-cp-sky transition-colors">
+            className="flex-1 py-4 border-[3px] border-cp-blue rounded-xl font-nunito font-bold text-base text-cp-dark-blue hover:bg-cp-sky transition-colors">
             ← atrás
           </button>
         )}
@@ -102,7 +105,7 @@ export default function FormPage() {
           <button
             onClick={() => setStep((s) => s + 1)}
             disabled={!canAdvance()}
-            className="flex-1 py-3 bg-gradient-to-r from-cp-dark-blue to-cp-blue text-white rounded-xl font-pixel text-[10px] shadow-cp disabled:opacity-40 hover:-translate-y-0.5 transition-all"
+            className="flex-1 py-4 bg-gradient-to-r from-cp-dark-blue to-cp-blue text-white rounded-xl font-nunito font-bold text-base shadow-cp disabled:opacity-40 hover:-translate-y-0.5 transition-all"
           >
             siguiente →
           </button>
@@ -110,7 +113,7 @@ export default function FormPage() {
           <button
             onClick={handleSubmit}
             disabled={submitting}
-            className="flex-1 py-3 bg-gradient-to-r from-cp-dark-blue to-cp-blue text-white rounded-xl font-pixel text-[10px] shadow-cp disabled:opacity-40 hover:-translate-y-0.5 transition-all"
+            className="flex-1 py-4 bg-gradient-to-r from-cp-dark-blue to-cp-blue text-white rounded-xl font-nunito font-bold text-base shadow-cp disabled:opacity-40 hover:-translate-y-0.5 transition-all"
           >
             {submitting ? "enviando..." : "🐧 enviar postal"}
           </button>
