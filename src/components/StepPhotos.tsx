@@ -31,7 +31,7 @@ export default function StepPhotos({ photoFiles, onPhotosChange }: StepPhotosPro
             <button
               type="button"
               onClick={() => removePhoto(i)}
-              className="absolute top-1 right-1 bg-white rounded-full w-5 h-5 text-xs flex items-center justify-center shadow"
+              className="absolute top-1 right-1 bg-white rounded-full w-7 h-7 text-sm font-bold flex items-center justify-center shadow-md border border-gray-200 hover:bg-red-50 hover:text-red-500 transition-colors"
             >✕</button>
           </div>
         ))}

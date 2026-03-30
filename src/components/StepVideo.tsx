@@ -44,8 +44,13 @@ export default function StepVideo({ videoFile, onVideoChange }: StepVideoProps) 
         ) : (
           <>
             <div className="text-4xl mb-2">🎬</div>
-            <p className="font-vt text-xl text-cp-dark-blue">subí un video corto</p>
-            <p className="text-sm text-blue-400 mt-1">MP4 / MOV · máx 1:30 min</p>
+            <p className="font-nunito font-black text-lg text-cp-dark-blue">subí tu video para Jime</p>
+            <p className="font-nunito text-sm text-blue-500 mt-2 leading-relaxed">
+              de tu cara deseándole feliz cumpleaños o diciéndole algo especial
+            </p>
+            <p className="font-nunito text-sm text-blue-400 mt-1">
+              MP4 / MOV · máx 1:30 min · de preferencia horizontal
+            </p>
           </>
         )}
       </div>

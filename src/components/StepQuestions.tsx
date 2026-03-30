@@ -49,20 +49,28 @@ export default function StepQuestions({ answers, onAnswersChange, shownQuestionI
     }
   }
 
+  function handleClear(questionId: number) {
+    onAnswersChange(answers.filter((a) => a.question_id !== questionId));
+  }
+
   return (
     <CPCard step="02" title="cuéntale algo a jime">
+      <p className="font-nunito text-sm text-blue-400 mb-4">respondé las que quieras — todo es opcional 💙</p>
+
       {error && (
         <div className="mb-3 p-3 bg-red-50 border-2 border-red-300 rounded-xl text-center">
           <p className="text-red-600 text-sm font-nunito mb-2">No se pudieron cargar las preguntas 😕</p>
-          <button onClick={() => loadMore(5)} className="text-cp-dark-blue text-xs font-bold underline font-nunito">reintentar</button>
+          <button onClick={() => loadMore(5)} className="text-cp-dark-blue text-sm font-bold underline font-nunito">reintentar</button>
         </div>
       )}
+
       {questions.map((q) => (
         <AskQuestion
           key={q.id}
           question={q.text}
           value={answers.find((a) => a.question_id === q.id)?.answer_text ?? ""}
           onChange={(text) => handleAnswer(q.id, text)}
+          onClear={() => handleClear(q.id)}
         />
       ))}
 
@@ -71,9 +79,9 @@ export default function StepQuestions({ answers, onAnswersChange, shownQuestionI
           type="button"
           onClick={() => loadMore(1)}
           disabled={loading}
-          className="w-full mt-2 py-3 border-2 border-cp-blue rounded-xl font-pixel text-[7px] text-cp-dark-blue hover:bg-cp-sky transition-colors disabled:opacity-50"
+          className="w-full mt-2 py-3 border-2 border-cp-blue rounded-xl font-nunito font-bold text-sm text-cp-dark-blue hover:bg-cp-sky transition-colors disabled:opacity-50"
         >
-          {loading ? "cargando..." : "💬 llenar otra pregunta"}
+          {loading ? "cargando..." : "💬 ver otra pregunta"}
         </button>
       )}
     </CPCard>

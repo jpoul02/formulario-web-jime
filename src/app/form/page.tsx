@@ -2,9 +2,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import StepOverview from "@/components/StepOverview";
 import StepProfile from "@/components/StepProfile";
 import StepQuestions from "@/components/StepQuestions";
-import StepVideoPrep from "@/components/StepVideoPrep";
 import StepVideo from "@/components/StepVideo";
 import StepPhotos from "@/components/StepPhotos";
 import { submitPostal } from "@/lib/api";
@@ -28,12 +28,6 @@ export default function FormPage() {
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setState((prev) => ({ ...prev, [key]: value }));
-  }
-
-  function canAdvance() {
-    if (step === 1) return state.name.trim().length > 0;
-    if (step === 2) return state.answers.some((a) => a.answer_text.trim().length > 0);
-    return true;
   }
 
   async function handleSubmit() {
@@ -61,7 +55,8 @@ export default function FormPage() {
         ))}
       </div>
 
-      {step === 1 && (
+      {step === 1 && <StepOverview />}
+      {step === 2 && (
         <StepProfile
           name={state.name}
           dedicatoria={state.dedicatoria}
@@ -71,7 +66,7 @@ export default function FormPage() {
           onPhotoChange={(f) => update("profilePhotoFile", f)}
         />
       )}
-      {step === 2 && (
+      {step === 3 && (
         <StepQuestions
           answers={state.answers}
           onAnswersChange={(a) => update("answers", a)}
@@ -79,7 +74,6 @@ export default function FormPage() {
           onShownIdsChange={(ids) => update("shownQuestionIds", ids)}
         />
       )}
-      {step === 3 && <StepVideoPrep />}
       {step === 4 && (
         <StepVideo
           videoFile={state.videoFile}
@@ -96,16 +90,17 @@ export default function FormPage() {
       {/* Navigation */}
       <div className="flex gap-3 mt-4">
         {step > 1 && (
-          <button onClick={() => setStep((s) => s - 1)}
-            className="flex-1 py-4 border-[3px] border-cp-blue rounded-xl font-nunito font-bold text-base text-cp-dark-blue hover:bg-cp-sky transition-colors">
+          <button
+            onClick={() => setStep((s) => s - 1)}
+            className="flex-1 py-4 border-[3px] border-cp-blue rounded-xl font-nunito font-bold text-base text-cp-dark-blue hover:bg-cp-sky transition-colors"
+          >
             ← atrás
           </button>
         )}
         {step < TOTAL_STEPS ? (
           <button
             onClick={() => setStep((s) => s + 1)}
-            disabled={!canAdvance()}
-            className="flex-1 py-4 bg-gradient-to-r from-cp-dark-blue to-cp-blue text-white rounded-xl font-nunito font-bold text-base shadow-cp disabled:opacity-40 hover:-translate-y-0.5 transition-all"
+            className="flex-1 py-4 bg-gradient-to-r from-cp-dark-blue to-cp-blue text-white rounded-xl font-nunito font-bold text-base shadow-cp hover:-translate-y-0.5 transition-all"
           >
             siguiente →
           </button>
