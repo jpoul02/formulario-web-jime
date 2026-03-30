@@ -1,5 +1,5 @@
 "use client";
-import { useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import CPCard from "./CPCard";
 
 interface StepProfileProps {
@@ -11,7 +11,16 @@ interface StepProfileProps {
 
 export default function StepProfile({ name, profilePhotoFile, onNameChange, onPhotoChange }: StepProfileProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const preview = profilePhotoFile ? URL.createObjectURL(profilePhotoFile) : null;
+  const preview = useMemo(() => {
+    if (!profilePhotoFile) return null;
+    return URL.createObjectURL(profilePhotoFile);
+  }, [profilePhotoFile]);
+
+  useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview);
+    };
+  }, [preview]);
 
   return (
     <CPCard step="01" title="tu perfil">
