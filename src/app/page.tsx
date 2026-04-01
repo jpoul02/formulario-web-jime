@@ -14,7 +14,7 @@ export default function LandingPage() {
 
   function handlePinSubmit() {
     if (pin === SECRET_PIN) {
-      router.push("/galeria");
+      router.push("/admin");
     } else {
       setError(true);
       setPin("");
