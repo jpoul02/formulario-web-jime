@@ -121,7 +121,7 @@ function PlayerModal({ player, onClose }: { player: PlayerState; onClose: () => 
 
 interface SongFormProps {
   initial?: PopularSong;
-  onSave: (data: FormData) => Promise<void>;
+  onSave: (data: FormData) => Promise<string | null>;
   onCancel: () => void;
   saving: boolean;
 }
@@ -129,16 +129,19 @@ interface SongFormProps {
 function SongForm({ initial, onSave, onCancel, saving }: SongFormProps) {
   const [title, setTitle] = useState(initial?.title ?? "");
   const [ytUrl, setYtUrl] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const coverRef = useRef<HTMLInputElement>(null);
   const audioRef = useRef<HTMLInputElement>(null);
 
   async function handle() {
+    setError(null);
     const fd = new FormData();
     fd.append("title", title);
     if (coverRef.current?.files?.[0]) fd.append("cover", coverRef.current.files[0]);
     if (audioRef.current?.files?.[0]) fd.append("audio", audioRef.current.files[0]);
     else if (ytUrl.trim()) fd.append("youtube_url", ytUrl.trim());
-    await onSave(fd);
+    const err = await onSave(fd);
+    if (err) setError(err);
   }
 
   return (
@@ -159,6 +162,11 @@ function SongForm({ initial, onSave, onCancel, saving }: SongFormProps) {
         o URL de YouTube
         <input style={inputStyle} value={ytUrl} onChange={e => setYtUrl(e.target.value)} placeholder="https://youtube.com/..." />
       </label>
+      {error && (
+        <div style={{ background: "#2a0a0a", border: "1px solid #e55", borderRadius: 8, padding: "10px 14px", fontSize: 13, color: "#ff8888", lineHeight: 1.5 }}>
+          ⚠️ {error}
+        </div>
+      )}
       <div style={{ display: "flex", gap: 8, marginTop: 4 }}>
         <button style={btnPrimary} onClick={handle} disabled={saving || !title.trim()}>
           {saving ? "Guardando..." : "Guardar"}
@@ -221,16 +229,23 @@ function TrackForm({ albumId, onSaved, onCancel }: { albumId: number; onSaved: (
   const [title, setTitle] = useState("");
   const [ytUrl, setYtUrl] = useState("");
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const audioRef = useRef<HTMLInputElement>(null);
 
   async function handle() {
+    setError(null);
     setSaving(true);
     const fd = new FormData();
     fd.append("title", title);
     if (audioRef.current?.files?.[0]) fd.append("audio", audioRef.current.files[0]);
     else if (ytUrl.trim()) fd.append("youtube_url", ytUrl.trim());
-    await fetch(`${API}/musica/albums/${albumId}/tracks`, { method: "POST", body: fd });
+    const res = await fetch(`${API}/musica/albums/${albumId}/tracks`, { method: "POST", body: fd });
     setSaving(false);
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      setError(body?.detail ?? "Error al guardar el track");
+      return;
+    }
     onSaved();
   }
 
@@ -239,6 +254,11 @@ function TrackForm({ albumId, onSaved, onCancel }: { albumId: number; onSaved: (
       <input style={inputStyle} value={title} onChange={e => setTitle(e.target.value)} placeholder="Nombre del track" />
       <input ref={audioRef} type="file" accept="audio/*" style={fileInputStyle} />
       <input style={inputStyle} value={ytUrl} onChange={e => setYtUrl(e.target.value)} placeholder="o URL de YouTube" />
+      {error && (
+        <div style={{ background: "#2a0a0a", border: "1px solid #e55", borderRadius: 8, padding: "10px 14px", fontSize: 12, color: "#ff8888", lineHeight: 1.5 }}>
+          ⚠️ {error}
+        </div>
+      )}
       <div style={{ display: "flex", gap: 8 }}>
         <button style={btnPrimary} onClick={handle} disabled={saving || !title.trim()}>
           {saving ? "..." : "Agregar"}
@@ -283,20 +303,30 @@ export default function MusicAdmin() {
 
   // ── Popular handlers ────────────────────────────────────────────────────────
 
-  async function handleAddSong(fd: FormData) {
+  async function handleAddSong(fd: FormData): Promise<string | null> {
     setSavingSong(true);
-    await fetch(`${API}/musica/popular`, { method: "POST", body: fd });
+    const res = await fetch(`${API}/musica/popular`, { method: "POST", body: fd });
     setSavingSong(false);
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      return body?.detail ?? "Error al guardar";
+    }
     setShowAddSong(false);
     loadSongs();
+    return null;
   }
 
-  async function handleEditSong(id: number, fd: FormData) {
+  async function handleEditSong(id: number, fd: FormData): Promise<string | null> {
     setSavingSong(true);
-    await fetch(`${API}/musica/popular/${id}`, { method: "PATCH", body: fd });
+    const res = await fetch(`${API}/musica/popular/${id}`, { method: "PATCH", body: fd });
     setSavingSong(false);
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      return body?.detail ?? "Error al guardar";
+    }
     setEditSongId(null);
     loadSongs();
+    return null;
   }
 
   async function handleDeleteSong(id: number) {
