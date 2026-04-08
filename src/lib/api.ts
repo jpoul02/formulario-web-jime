@@ -27,6 +27,11 @@ export async function deletePostal(id: number): Promise<void> {
   if (!res.ok) throw new Error("Failed to delete postal");
 }
 
+export async function deleteAnswer(id: number): Promise<void> {
+  const res = await fetch(`${API}/postales/answers/${id}`, { method: "DELETE" });
+  if (!res.ok) throw new Error("Failed to delete answer");
+}
+
 export async function submitPostal(state: FormState): Promise<PostalDetail> {
   const form = new FormData();
   form.append("name", state.name);

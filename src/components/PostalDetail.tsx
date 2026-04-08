@@ -1,7 +1,15 @@
+"use client";
+import { useState } from "react";
 import type { PostalDetail } from "@/types";
 import DeleteButton from "./DeleteButton";
+import AnswerDeleteButton from "./AnswerDeleteButton";
 
 export default function PostalDetailView({ postal }: { postal: PostalDetail }) {
+  const [answers, setAnswers] = useState(postal.answers);
+
+  function removeAnswer(id: number) {
+    setAnswers(prev => prev.filter(a => a.id !== id));
+  }
   return (
     <div className="max-w-lg mx-auto px-4 py-8">
       {/* Profile header (IG style) */}
@@ -34,19 +42,20 @@ export default function PostalDetailView({ postal }: { postal: PostalDetail }) {
       )}
 
       {/* Answers (ask.fm style) */}
-      {postal.answers.length > 0 && (
+      {answers.length > 0 && (
         <div className="bg-white border-[3px] border-cp-blue rounded-2xl shadow-cp overflow-hidden mb-4">
           <div className="bg-gradient-to-r from-cp-dark-blue to-cp-blue px-4 py-2">
-            <span className="font-nunito font-bold text-sm text-white">💬 respuestas</span>
+            <span className="font-nunito font-bold text-sm text-white">💬 respuestas ({answers.length})</span>
           </div>
           <div className="p-4">
-            {postal.answers.map((a) => (
-              <div key={a.id} className="mb-4">
+            {answers.map((a) => (
+              <div key={a.id} className="mb-4 group">
                 <div className="bg-gradient-to-r from-cp-navy to-cp-dark-blue rounded-t-xl px-4 py-3">
                   <p className="text-white text-sm font-bold leading-snug">💬 {a.question.text}</p>
                 </div>
                 <div className="border-2 border-cp-blue border-t-0 rounded-b-xl px-4 py-3">
                   <p className="font-nunito text-base text-blue-900 whitespace-pre-wrap">{a.answer_text}</p>
+                  <AnswerDeleteButton answerId={a.id} onDeleted={() => removeAnswer(a.id)} />
                 </div>
               </div>
             ))}
