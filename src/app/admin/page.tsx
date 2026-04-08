@@ -39,6 +39,14 @@ export default async function AdminPage() {
             <p className="font-pixel text-[9px] text-blue-300 mb-1">historia</p>
             <p className="font-vt text-2xl text-white">📖 Gestionar historia</p>
           </Link>
+
+          <Link
+            href="/admin/carta"
+            className="block bg-gradient-to-r from-cp-dark-blue to-cp-blue rounded-xl border-[2px] border-cp-blue shadow-cp p-5 hover:-translate-y-0.5 transition-all"
+          >
+            <p className="font-pixel text-[9px] text-blue-300 mb-1">carta secreta</p>
+            <p className="font-vt text-2xl text-white">💌 Escribir carta</p>
+          </Link>
         </div>
 
         <div className="mt-8 text-center">
