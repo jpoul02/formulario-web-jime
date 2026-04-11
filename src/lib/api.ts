@@ -71,4 +71,9 @@ export async function deleteAnswerMedia(answerId: number, mediaId: number): Prom
   if (!res.ok) throw new Error("Failed to delete media");
 }
 
+export async function deletePostalPhoto(postalId: number, photoId: number): Promise<void> {
+  const res = await fetch(`${API}/postales/${postalId}/photos/${photoId}`, { method: "DELETE" });
+  if (!res.ok) throw new Error("Failed to delete photo");
+}
+
 export type { Question, PostalListItem, PostalDetail, FormState, AnswerIn, AnswerMedia } from "@/types";

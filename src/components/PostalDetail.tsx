@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import type { PostalDetail, AnswerOut, AnswerMedia } from "@/types";
 import DeleteButton from "./DeleteButton";
 import AnswerDeleteButton from "./AnswerDeleteButton";
-import { patchAnswerText, addAnswerMedia, deleteAnswerMedia } from "@/lib/api";
+import { patchAnswerText, addAnswerMedia, deleteAnswerMedia, deletePostalPhoto } from "@/lib/api";
 
 // ── Inline answer editor ───────────────────────────────────────────────────
 
@@ -118,6 +118,8 @@ function AnswerEditor({ answer, onClose }: { answer: AnswerOut; onClose: (update
 export default function PostalDetailView({ postal }: { postal: PostalDetail }) {
   const [answers, setAnswers] = useState(postal.answers);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [photos, setPhotos] = useState(postal.photos);
+  const [deletingPhotoId, setDeletingPhotoId] = useState<number | null>(null);
 
   function removeAnswer(id: number) {
     setAnswers((prev) => prev.filter((a) => a.id !== id));
@@ -126,6 +128,16 @@ export default function PostalDetailView({ postal }: { postal: PostalDetail }) {
   function updateAnswer(updated: AnswerOut) {
     setAnswers((prev) => prev.map((a) => (a.id === updated.id ? updated : a)));
     setEditingId(null);
+  }
+
+  async function handleDeletePhoto(photoId: number) {
+    setDeletingPhotoId(photoId);
+    try {
+      await deletePostalPhoto(postal.id, photoId);
+      setPhotos((prev) => prev.filter((p) => p.id !== photoId));
+    } finally {
+      setDeletingPhotoId(null);
+    }
   }
 
   return (
@@ -212,15 +224,24 @@ export default function PostalDetailView({ postal }: { postal: PostalDetail }) {
       )}
 
       {/* Photos */}
-      {postal.photos.length > 0 && (
+      {photos.length > 0 && (
         <div className="bg-white border-[3px] border-cp-blue rounded-2xl shadow-cp overflow-hidden mb-4">
           <div className="bg-gradient-to-r from-cp-dark-blue to-cp-blue px-4 py-2">
-            <span className="font-nunito font-bold text-sm text-white">📸 fotos</span>
+            <span className="font-nunito font-bold text-sm text-white">📸 fotos ({photos.length})</span>
           </div>
           <div className="grid grid-cols-3 gap-[2px] p-[2px]">
-            {postal.photos.map((p) => (
-              <div key={p.id} className="aspect-square">
+            {photos.map((p) => (
+              <div key={p.id} className="aspect-square relative group">
                 <img src={p.photo_url} alt="" className="w-full h-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() => handleDeletePhoto(p.id)}
+                  disabled={deletingPhotoId === p.id}
+                  className="absolute top-1 right-1 w-6 h-6 rounded-full bg-red-600 text-white text-xs font-bold flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-60"
+                  title="Eliminar foto"
+                >
+                  {deletingPhotoId === p.id ? "…" : "✕"}
+                </button>
               </div>
             ))}
           </div>
