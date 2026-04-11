@@ -22,6 +22,7 @@ export default function FormPage() {
     dedicatoria: "",
     profilePhotoFile: null,
     answers: [],
+    answerMediaFiles: {},
     videoFile: null,
     photoFiles: [],
     shownQuestionIds: [],
@@ -78,6 +79,8 @@ export default function FormPage() {
           onAnswersChange={(a) => update("answers", a)}
           shownQuestionIds={state.shownQuestionIds}
           onShownIdsChange={(ids) => update("shownQuestionIds", ids)}
+          answerMediaFiles={state.answerMediaFiles}
+          onAnswerMediaChange={(m) => update("answerMediaFiles", m)}
         />
       )}
       {step === 5 && (

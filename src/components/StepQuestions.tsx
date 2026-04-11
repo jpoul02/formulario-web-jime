@@ -10,11 +10,20 @@ interface StepQuestionsProps {
   onAnswersChange: (answers: AnswerIn[]) => void;
   shownQuestionIds: number[];
   onShownIdsChange: (ids: number[]) => void;
+  answerMediaFiles: Record<number, File[]>;
+  onAnswerMediaChange: (mediaFiles: Record<number, File[]>) => void;
 }
 
 const TOTAL_QUESTIONS = 15;
 
-export default function StepQuestions({ answers, onAnswersChange, shownQuestionIds, onShownIdsChange }: StepQuestionsProps) {
+export default function StepQuestions({
+  answers,
+  onAnswersChange,
+  shownQuestionIds,
+  onShownIdsChange,
+  answerMediaFiles,
+  onAnswerMediaChange,
+}: StepQuestionsProps) {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(false);
   const [allShown, setAllShown] = useState(false);
@@ -53,6 +62,10 @@ export default function StepQuestions({ answers, onAnswersChange, shownQuestionI
     onAnswersChange(answers.filter((a) => a.question_id !== questionId));
   }
 
+  function handleFilesChange(questionId: number, files: File[]) {
+    onAnswerMediaChange({ ...answerMediaFiles, [questionId]: files });
+  }
+
   return (
     <CPCard step="02" title="cuéntale algo a jime">
       <p className="font-nunito text-sm text-blue-400 mb-4">respondé las que quieras — todo es opcional 💙</p>
@@ -71,6 +84,8 @@ export default function StepQuestions({ answers, onAnswersChange, shownQuestionI
           value={answers.find((a) => a.question_id === q.id)?.answer_text ?? ""}
           onChange={(text) => handleAnswer(q.id, text)}
           onClear={() => handleClear(q.id)}
+          files={answerMediaFiles[q.id] ?? []}
+          onFilesChange={(files) => handleFilesChange(q.id, files)}
         />
       ))}
 

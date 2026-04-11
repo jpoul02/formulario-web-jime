@@ -40,6 +40,10 @@ export async function submitPostal(state: FormState): Promise<PostalDetail> {
   if (state.profilePhotoFile) form.append("profile_photo", state.profilePhotoFile);
   if (state.videoFile) form.append("video", state.videoFile);
   state.photoFiles.forEach((f) => form.append("photos", f));
+  // Per-answer media files merged into photos
+  Object.values(state.answerMediaFiles).forEach((files) =>
+    files.forEach((f) => form.append("photos", f))
+  );
   const res = await fetch(`${API}/postales`, { method: "POST", body: form });
   if (!res.ok) throw new Error("Failed to submit postal");
   return res.json();

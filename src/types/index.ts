@@ -44,6 +44,7 @@ export interface FormState {
   dedicatoria: string;
   profilePhotoFile: File | null;
   answers: AnswerIn[];
+  answerMediaFiles: Record<number, File[]>;
   videoFile: File | null;
   photoFiles: File[];
   shownQuestionIds: number[];
