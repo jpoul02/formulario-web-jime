@@ -1,4 +1,4 @@
-import type { Question, PostalListItem, PostalDetail, FormState } from "@/types";
+import type { Question, PostalListItem, PostalDetail, FormState, AnswerMedia } from "@/types";
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
@@ -49,4 +49,26 @@ export async function submitPostal(state: FormState): Promise<PostalDetail> {
   return res.json();
 }
 
-export type { Question, PostalListItem, PostalDetail, FormState, AnswerIn } from "@/types";
+export async function patchAnswerText(answerId: number, text: string): Promise<void> {
+  const res = await fetch(`${API}/postales/answers/${answerId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ answer_text: text }),
+  });
+  if (!res.ok) throw new Error("Failed to update answer");
+}
+
+export async function addAnswerMedia(answerId: number, file: File): Promise<AnswerMedia> {
+  const form = new FormData();
+  form.append("file", file);
+  const res = await fetch(`${API}/postales/answers/${answerId}/media`, { method: "POST", body: form });
+  if (!res.ok) throw new Error("Failed to upload media");
+  return res.json();
+}
+
+export async function deleteAnswerMedia(answerId: number, mediaId: number): Promise<void> {
+  const res = await fetch(`${API}/postales/answers/${answerId}/media/${mediaId}`, { method: "DELETE" });
+  if (!res.ok) throw new Error("Failed to delete media");
+}
+
+export type { Question, PostalListItem, PostalDetail, FormState, AnswerIn, AnswerMedia } from "@/types";

@@ -14,11 +14,19 @@ export interface PhotoOut {
   order: number;
 }
 
+export interface AnswerMedia {
+  id: number;
+  media_url: string;
+  media_type: "image" | "video";
+  order: number;
+}
+
 export interface AnswerOut {
   id: number;
   question_id: number;
   answer_text: string;
   question: Question;
+  media: AnswerMedia[];
 }
 
 export interface PostalListItem {
