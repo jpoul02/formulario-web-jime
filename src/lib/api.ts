@@ -1,6 +1,6 @@
 import type { Question, PostalListItem, PostalDetail, FormState, AnswerMedia } from "@/types";
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+const API = process.env.NEXT_PUBLIC_API_URL ?? "https://api-web-jime-jime.up.railway.app";
 
 export async function getRandomQuestions(count: number, exclude: number[]): Promise<Question[]> {
   const params = new URLSearchParams({ count: String(count) });
